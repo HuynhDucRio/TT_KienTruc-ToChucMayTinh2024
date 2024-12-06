@@ -1,0 +1,138 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/07/2024 04:00:20 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Shigoto\Tools\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\..\..\..\8051_Project C\
+                    -libraries) DEBUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "delay.h"
+   3          sbit led1 = P1^0;
+   4          sbit led2 = P1^1;
+   5          sbit led3 = P1^2;
+   6          //Fcrystal = 11.0592MHz
+   7          unsigned char rev; //Du lieu nhan duoc
+   8          unsigned char flag = 0;
+   9          void setup(void)
+  10          {
+  11   1        TMOD = 0x20; // timer1 mode 2
+  12   1        TH1 = 0xFD; //baudrate 9600
+  13   1        TL1 = 0xFD; 
+  14   1        TR1 = 1; //enable timer1
+  15   1        
+  16   1        SCON = 0x50; //8bit data, Timer1(baudrate)
+  17   1        
+  18   1        EA = 1;//enable global interrupt
+  19   1        ES = 1;//enable serial interrupt
+  20   1      }
+  21          
+  22          void serial_send(unsigned char dta)//Ham gui du lieu
+  23          {
+  24   1        SBUF = dta; //
+  25   1        while(TI==0);//
+  26   1        TI = 0;
+  27   1      }
+  28          
+  29          void serial_receive(void) interrupt 4
+  30          {
+  31   1        if(RI == 1) //doc du lieu khi RI len 1
+  32   1        {
+  33   2          rev = SBUF;//doc du lieu nhan duoc trong SBUF
+  34   2          RI = 0; // clear RI sau khi doc
+  35   2          flag = 1; //set co bao co du lieu moi
+  36   2        }
+  37   1      }
+  38          void send_string(char x[]) //Ham gui chuoi
+  39          {
+  40   1        int i =0;
+  41   1        while(x[i])
+  42   1        {
+  43   2          serial_send(x[i]);
+  44   2          i++;
+  45   2        }
+  46   1      
+  47   1      }
+  48          void main (void)
+  49          {
+  50   1        setup();
+  51   1        led1 = 0;
+  52   1        led2 = 0;
+  53   1        led3 =0;
+  54   1      
+C51 COMPILER V9.60.0.0   MAIN                                                              12/07/2024 04:00:20 PAGE 2   
+
+  55   1        while(1)
+  56   1        {
+  57   2          if(flag == 1) // check co du lieu moi
+  58   2          {
+  59   3            switch (rev) // Switch case cac gia tri cua rev ung voi tung che do
+  60   3            {
+  61   4              case '1':
+  62   4                led1 = 1;
+  63   4                serial_send(13);
+  64   4                send_string("led1 on");
+  65   4                serial_send(13);
+  66   4                break;
+  67   4              case '2':
+  68   4                led1 = 0;
+  69   4                serial_send(13);
+  70   4                send_string("led1 off");
+  71   4                serial_send(13);
+  72   4                break;
+  73   4              case '3':
+  74   4                led2 = 1;
+  75   4                serial_send(13);
+  76   4                send_string("led2 on");
+  77   4                serial_send(13);
+  78   4                break;
+  79   4              case '4':
+  80   4                led2 = 0;
+  81   4                serial_send(13);
+  82   4                send_string("led2 off");
+  83   4                serial_send(13);
+  84   4                break;
+  85   4              case '5':
+  86   4                while(rev == '5'); //Khi nhan '5' thi treo doi gia tri tiep theo de blink
+  87   4                rev -= 0x30;      //Doi ki tu sang so lan blink
+  88   4                serial_send(13);
+  89   4                send_string("Led3 blink ");
+  90   4                serial_send((rev+0x30));
+  91   4                send_string(" times");
+  92   4                while(rev != 0) // blink led3
+  93   4                  {
+  94   5                  led3 = !led3;
+  95   5                  delayMs(500);
+  96   5                  led3 = !led3;
+  97   5                  delayMs(500);
+  98   5                    rev--;
+  99   5                  }
+ 100   4                  serial_send(13);
+ 101   4                  send_string("Blink done!");
+ 102   4                  serial_send(13);
+ 103   4                break;
+ 104   4              default:
+ 105   4                break;
+ 106   4            }
+ 107   3            flag = 0; //clear co sau khi da xu li xong du lieu vua nhan
+ 108   3          }
+ 109   2        }
+ 110   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    266    ----
+   CONSTANT SIZE    =     65    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.0.0   MAIN                                                              12/07/2024 04:00:20 PAGE 3   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

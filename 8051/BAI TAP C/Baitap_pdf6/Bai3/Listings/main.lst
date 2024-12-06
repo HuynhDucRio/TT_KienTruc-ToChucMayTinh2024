@@ -1,0 +1,110 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/07/2024 02:46:59 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Shigoto\Tools\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #define LED P2
+   3          unsigned int dcount = 0;
+   4          sbit DC = P1^0;
+   5          sbit startBTN = P3^2;
+   6          sbit stopBTN = P3^3;
+   7          
+   8          void setup(void)
+   9          {
+  10   1        DC = 0;
+  11   1        startBTN = 1;
+  12   1        stopBTN = 1;
+  13   1        
+  14   1        EA = 1;
+  15   1        EX0 = 1;
+  16   1        ET0 = 1;
+  17   1        ET1 = 1;
+  18   1        
+  19   1        TMOD = 0x12;
+  20   1        TH0 = 0x00;
+  21   1        TL0 = 0x00;
+  22   1        
+  23   1        TH1 = 0xFC;
+  24   1        TL1 = 0x18;
+  25   1        TR1 = 1;
+  26   1      }
+  27          
+  28          void delayMS(unsigned int t)
+  29          {
+  30   1        dcount = 0;
+  31   1        while (dcount<t);
+  32   1      }
+  33          void ISR_timer0() interrupt 1
+  34          {
+  35   1        DC = !DC;
+  36   1      }
+  37          
+  38          void ISR_timer1() interrupt 3
+  39          {
+  40   1        TH1 = 0xFC;
+  41   1        TL1 = 0x18;
+  42   1        dcount++;
+  43   1      }
+  44          void ISR_start() interrupt 0
+  45          {
+  46   1        TR0 = 1;
+  47   1        EX0 = 0;
+  48   1        EX1 = 1;
+  49   1        TR1 = 1;
+  50   1      }
+  51          
+  52          void ISR_stop() interrupt 2
+  53          {
+  54   1      
+C51 COMPILER V9.60.0.0   MAIN                                                              12/07/2024 02:46:59 PAGE 2   
+
+  55   1        TR0 = 0;
+  56   1        DC = 0;
+  57   1        EX0 = 1;
+  58   1        EX1 = 0;
+  59   1        TR1 = 0;
+  60   1      }
+  61          
+  62          void main (void)
+  63          {
+  64   1        setup();
+  65   1        while(1)
+  66   1        {
+  67   2          if( TR0 == 1)
+  68   2          {
+  69   3            int i;
+  70   3            for(i=5;i >= 0;i--)
+  71   3            {
+  72   4              LED = i;
+  73   4              if( i == 0)
+  74   4              {
+  75   5                TR0 = 0;
+  76   5                DC = 0;
+  77   5                EX0 = 1;
+  78   5                EX1 = 0;
+  79   5              }
+  80   4              delayMS(1000);
+  81   4            } 
+  82   3          }
+  83   2        }
+  84   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    143    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,4 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj" 
+TO ".\Objects\C_Project_pdf5" 
+PRINT(".\Listings\C_Project_pdf5.m51") RAMSIZE(256) 

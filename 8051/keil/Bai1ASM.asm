@@ -1,0 +1,21 @@
+ORG 00H
+	LOOP:
+	MOV A,P3
+	ANL A, #0Fh
+	MOV R2,A
+	
+	MOV A,P3
+	SWAP A
+	ANL A, #0Fh
+	
+	ADD A,R2
+	
+	MOV B,#10
+	DIV AB
+	SWAP A
+	ADD A,B
+	MOV P1,A
+	
+	JMP LOOP
+
+END

@@ -1,0 +1,4 @@
+".\Objects\Bai1ASM.obj",
+".\Objects\main.obj" 
+TO ".\Objects\demoProject" 
+PRINT(".\Listings\demoProject.m51")

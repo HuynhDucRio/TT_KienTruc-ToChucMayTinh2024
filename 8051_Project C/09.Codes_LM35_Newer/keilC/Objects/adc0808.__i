@@ -1,0 +1,1 @@
+"..\..\libraries\adc0808.c" OPTIMIZE (8,SPEED) BROWSE INCDIR(..\..\libraries) DEBUG OBJECTEXTEND PRINT(.\Listings\adc0808.lst) TABS (2) OBJECT(.\Objects\adc0808.obj)

@@ -1,0 +1,82 @@
+C51 COMPILER V9.60.7.0   ADC0808                                                           10/12/2024 14:39:01 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE ADC0808
+OBJECT MODULE PLACED IN .\Objects\adc0808.obj
+COMPILER INVOKED BY: C:\Keil_v5_8051\C51\BIN\C51.EXE ..\..\libraries\adc0808.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\..\lib
+                    -raries) DEBUG OBJECTEXTEND PRINT(.\Listings\adc0808.lst) TABS(2) OBJECT(.\Objects\adc0808.obj)
+
+line level    source
+
+   1          #include "adc0808.h"
+   2          
+   3          /*Chương trình ngắt timer 0*/
+   4          void INT_Timer0() interrupt 1 {
+   5   1        //ctr phuc vu ngat tao xung clock cho ADC0808
+   6   1        ADC0808_CLK= !ADC0808_CLK; //Dao bit
+   7   1      }
+   8          
+   9          
+  10          /*Hàm đọc và điều khiển ADC0808*/
+  11          unsigned char ADC0808_Read(unsigned char channel){  
+  12   1        unsigned char kq;
+  13   1      
+  14   1        //Tao xung clock cho ADC0808 – sẽ học sau
+  15   1        TMOD=0x02;  //mode 02
+  16   1        TH0=TL0=236;
+  17   1        TR0=1;
+  18   1        ET0=1;//Ngat timer0
+  19   1        EA=1;//Cho phep ngat cuc bo
+  20   1      
+  21   1        ADC0808_DATA = 0xff;
+  22   1        ADC0808_EOC = 1;
+  23   1        ADC0808_ALE = 0;
+  24   1        ADC0808_START = 0;
+  25   1      
+  26   1        ADC0808_A = channel & 0x01;
+  27   1        ADC0808_B = channel & 0x02;
+  28   1        ADC0808_C = channel & 0x04;
+  29   1        ADC0808_ALE = 1;
+  30   1        ADC0808_START = 1;
+  31   1        ADC0808_ALE = 0;
+  32   1        ADC0808_START = 0;
+  33   1        while(ADC0808_EOC);  //still 1, when start = 0 (in short time)
+  34   1        while(!ADC0808_EOC); //EOC=0
+  35   1        ADC0808_OE = 1;
+  36   1        kq = ADC0808_DATA;
+  37   1        ADC0808_OE = 0;
+  38   1      
+  39   1      /*
+  40   1        ADC 8 bit. 
+  41   1        => ADC0808_DATA�= (Vin/Vref)*255
+  42   1        =>�Vin = (ADC0808_DATA *�Vref)/255 (V)
+  43   1        Voi: 0.01V = 1 do C.
+  44   1        => �temp�=�Vin/0.01
+  45   1      */
+  46   1      
+  47   1        kq = kq*Vref*100/255;
+  48   1      
+  49   1      
+  50   1        //stop Timer & all interrupts
+  51   1        TR0=0;//Dung Timer
+  52   1        ET0=0;//Cam Ngat timer0
+  53   1        //EA=0;//Cam ngat toan cuc
+  54   1      
+C51 COMPILER V9.60.7.0   ADC0808                                                           10/12/2024 14:39:01 PAGE 2   
+
+  55   1        return kq;
+  56   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     94    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

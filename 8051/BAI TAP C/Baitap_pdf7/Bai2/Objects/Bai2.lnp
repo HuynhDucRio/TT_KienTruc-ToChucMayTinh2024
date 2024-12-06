@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\delay.obj" 
+TO ".\Objects\Bai2" 
+PRINT(".\Listings\Bai2.m51") RAMSIZE(256) 

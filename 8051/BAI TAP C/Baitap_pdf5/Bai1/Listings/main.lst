@@ -1,0 +1,51 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              11/16/2024 15:03:11 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Shigoto\Tools\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          
+   3          sbit LED = P2^1;
+   4          
+   5          sbit OFF_BTN = P2^4;
+   6          sbit ON_BTN = P2^5;
+   7          
+   8          void main(void)
+   9          {
+  10   1          OFF_BTN = 1;
+  11   1          ON_BTN = 1;
+  12   1          LED = 0;
+  13   1        while(1)
+  14   1        {
+  15   2          if(ON_BTN == 0)
+  16   2          {
+  17   3            LED = 1;
+  18   3            while( ON_BTN == 0);
+  19   3          }
+  20   2          if(OFF_BTN == 0)
+  21   2          {
+  22   3            LED = 0;
+  23   3            while( OFF_BTN == 0);
+  24   3          }
+  25   2          
+  26   2        }
+  27   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     24    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

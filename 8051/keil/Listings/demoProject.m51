@@ -1,0 +1,86 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/09/2024  07:07:43  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\SHIGOTO\TOOLS\C51\BIN\BL51.EXE .\Objects\Bai1ASM.obj, .\Objects\main.obj TO .\Objects\demoProject PRINT (.\Listings\d
+>> emoProject.m51)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\Bai1ASM.obj (BAI1ASM)
+  .\Objects\main.obj (MAIN)
+
+
+LINK MAP OF MODULE:  .\Objects\demoProject (BAI1ASM)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0016H     ABSOLUTE     
+* OVERLAP * CODE    0000H     0016H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\demoProject (BAI1ASM)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        BAI1ASM
+  D:00F0H         SYMBOL        B
+  C:0000H         SYMBOL        LOOP
+  D:0090H         SYMBOL        P1
+  D:00B0H         SYMBOL        P3
+  C:0000H         LINE#         3
+  C:0002H         LINE#         4
+  C:0004H         LINE#         5
+  C:0005H         LINE#         7
+  C:0007H         LINE#         8
+  C:0008H         LINE#         9
+  C:000AH         LINE#         11
+  C:000BH         LINE#         13
+  C:000EH         LINE#         14
+  C:000FH         LINE#         15
+  C:0010H         LINE#         16
+  C:0012H         LINE#         17
+  C:0014H         LINE#         19
+  -------         ENDMOD        BAI1ASM
+
+  -------         MODULE        MAIN
+  D:00F0H         SYMBOL        B
+  C:0000H         SYMBOL        LOOP
+  D:0090H         SYMBOL        P1
+  D:00B0H         SYMBOL        P3
+  C:0000H         LINE#         3
+  C:0002H         LINE#         4
+  C:0004H         LINE#         5
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/09/2024  07:07:43  PAGE 2
+
+
+  C:0005H         LINE#         7
+  C:0007H         LINE#         8
+  C:0008H         LINE#         9
+  C:000AH         LINE#         11
+  C:000BH         LINE#         13
+  C:000EH         LINE#         14
+  C:000FH         LINE#         15
+  C:0010H         LINE#         16
+  C:0012H         LINE#         17
+  C:0014H         LINE#         19
+  -------         ENDMOD        MAIN
+
+*** WARNING L5: CODE SPACE MEMORY OVERLAP
+    FROM:    0000H
+    TO:      0015H
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 002CH BYTE ( 2%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=44
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
